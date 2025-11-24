@@ -10,7 +10,15 @@ This repository is divided into three main parts:
 2.  **[Frontend (AngularFrontend)](./AngularFrontend/README.md)**: The client-side user interface built with Angular. It allows users to interact with the application.
 3.  **[Database](./Database_README.md)**: The SQL scripts required to set up the Microsoft SQL Server database.
 
-## 🚀 Getting Started
+## � Application Preview
+
+**Frontend User Interface:**
+![Frontend UI](docs/images/frontend_ui.png)
+
+**Backend API Documentation (Swagger UI):**
+![Swagger UI](docs/images/swagger_ui.png)
+
+## �🚀 Getting Started
 
 To get the application running, you will need to set up each component in the following order:
 
