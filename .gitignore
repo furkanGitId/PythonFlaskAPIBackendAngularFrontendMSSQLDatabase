@@ -1,0 +1,47 @@
+# ----------------------
+# General / System
+# ----------------------
+.DS_Store
+Thumbs.db
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.log
+
+# ----------------------
+# Python / Backend
+# ----------------------
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+ENV/
+.pytest_cache/
+.env
+
+# ----------------------
+# Node / Angular / Frontend
+# ----------------------
+node_modules/
+dist/
+/tmp
+/out-tsc
+/bazel-out
+npm-debug.log
+yarn-error.log
+.angular/cache
+.sass-cache/
+connect.lock
+coverage/
+libpeerconnection.log
+testem.log
+typings/
+__screenshots__/
+
+# ----------------------
+# Docker / Secrets
+# ----------------------
+docker-compose.yml

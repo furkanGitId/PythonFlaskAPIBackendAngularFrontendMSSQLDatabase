@@ -100,3 +100,23 @@ To stop and **remove data** (start fresh):
 ```powershell
 docker-compose down -v
 ```
+
+## 🔒 Security Best Practices
+
+Since `docker-compose.yml` contains sensitive information (like database passwords), you might want to exclude it from your public GitHub repository while keeping it on your local machine.
+
+Run these commands in PowerShell to untrack the file:
+
+```powershell
+# 1. Remove docker-compose.yml from Git tracking (keeps the file on your disk)
+git rm --cached docker-compose.yml
+
+# 2. Add it to .gitignore so it doesn't get added again
+Add-Content .gitignore "`ndocker-compose.yml"
+
+# 3. Commit the removal
+git commit -m "Remove docker-compose.yml from repo to protect secrets"
+
+# 4. Push the changes to GitHub
+git push origin main
+```
