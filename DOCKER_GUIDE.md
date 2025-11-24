@@ -120,3 +120,99 @@ git commit -m "Remove docker-compose.yml from repo to protect secrets"
 # 4. Push the changes to GitHub
 git push origin main
 ```
+
+## 🛠️ Manual Deployment (Without Docker Compose)
+
+If you cannot use `docker-compose.yml` (e.g., you excluded it or want to run containers manually), follow these steps to deploy the application using standard Docker commands.
+
+### 1. Create a Network
+Create a shared network so containers can talk to each other.
+```powershell
+docker network create app-network
+```
+
+### 2. Run the Database
+Start the SQL Server container. We name it `db` so the backend can find it.
+```powershell
+docker run -d `
+  --name db `
+  --network app-network `
+  -e "ACCEPT_EULA=Y" `
+  -e "MSSQL_SA_PASSWORD=SqlPass@123" `
+  -p 1433:1433 `
+  mcr.microsoft.com/mssql/server:2022-latest
+```
+
+### 3. Build and Run the Backend
+Build the image and start the container. We name it `flask-api` so the frontend can find it.
+
+**Build:**
+```powershell
+docker build -t flask-backend ./PythonFlaskAPIBackend
+```
+
+**Run:**
+```powershell
+docker run -d `
+  --name flask-api `
+  --network app-network `
+  -p 5000:5000 `
+  -e "DB_SERVER=db" `
+  -e "DB_NAME=flask_demo" `
+  -e "DB_USER=sa" `
+  -e "DB_PASSWORD=SqlPass@123" `
+  -e "ODBC_DRIVER=ODBC Driver 17 for SQL Server" `
+  -e "SECRET_KEY=dev_secret_key" `
+  flask-backend
+```
+
+### 4. Build and Run the Frontend
+Build the image and start the container.
+
+**Build:**
+```powershell
+docker build -t angular-frontend ./AngularFrontend
+```
+
+**Run:**
+```powershell
+docker run -d `
+  --name frontend `
+  --network app-network `
+  -p 4200:4200 `
+  angular-frontend
+```
+
+### 5. Check Logs (Manual Mode)
+Since we are not using Docker Compose, we check logs for each container individually.
+
+```powershell
+# Backend Logs
+docker logs -f flask-api
+
+# Frontend Logs
+docker logs -f frontend
+
+# Database Logs
+docker logs -f db
+```
+
+### 6. Access Shell (Manual Mode)
+To enter the containers manually:
+
+```powershell
+# Backend Shell
+docker exec -it flask-api bash
+
+# Database Shell
+docker exec -it db bash
+```
+
+### 7. Cleanup (Stop & Remove)
+To stop and remove these manually created containers:
+```powershell
+docker stop frontend flask-api db
+docker rm frontend flask-api db
+docker network rm app-network
+```
+
